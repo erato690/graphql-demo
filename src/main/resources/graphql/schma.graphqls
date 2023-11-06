@@ -1,0 +1,61 @@
+
+type Query {
+    categories: [Category!]!
+    courses: [Course!]!
+
+    categoriesById(id:ID!):Category
+
+    coursesByField(id:ID!,name:String):[Course]!
+    coursesByCursor(first:Int,after: String, last: Int, before: String,limit:Int):[CourseConnection]!
+    categoriesByField(id:ID!,name:String):Category
+}
+
+
+type CourseConnection{
+    edges: [CourseEdge!]!
+    node: CoursePageInfo!
+
+}
+
+type CourseEdge{
+    cursor: String!
+    node: Course!
+}
+
+type CoursePageInfo{
+    hasNextPage: Boolean!
+    endCursor: String!
+    pageSize: Int!
+    hasPreviousPage: Boolean!
+}
+
+type Category {
+    id: ID!
+    name: String!
+    description: String
+    courses: [Course!]!
+}
+
+type Course {
+    id: ID!
+    name: String!
+    description: String
+    category: Category!
+}
+
+input NewCategory{
+    name: String!
+    description: String
+}
+
+input NewCourse{
+    name: String!
+    id: ID!
+    description: String
+    categoryId:String!
+}
+
+type Mutation{
+    crateCategory(input: NewCategory!):Category!
+    createCourse(input: NewCourse!):Course!
+}
